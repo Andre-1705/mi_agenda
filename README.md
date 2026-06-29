@@ -40,4 +40,45 @@ El proyecto se divide en 3 clases para mantener el código ordenado:
 - Migrar la aplicación de consola a una interfaz gráfica web.
 - Crear un backend con Spring Boot exponiendo endpoints.
 - Crear un frontend con HTML, CSS y JavaScript.
-- Conectar ambos lados enviando los datos en formato JSON usando fetch.# Clase ¿Para qué?
+- Conectar ambos lados enviando los datos en formato JSON usando fetch.
+  
+## Proyección por etapas
+
+> ETAPA 1: Arrancar Spring Boot
+Objetivo: Conectar Java con el navegador.
+
+Instalar las herramientas necesarias (Spring Initializr).
+Crear un proyecto nuevo vacío.
+Hacer que al entrar a [http://localhost:8080] diga "Agenda funcionando".
+Regla: Sin lógica, sin tareas. Solo ver que el servidor levanta.
+
+> ETAPA 2: Migrar el cerebro (Servicios)
+Objetivo: Que tu código actual funcione dentro de Spring.
+
+Copiar tus clases Tarea y Agenda al nuevo proyecto.
+Aprender qué es un @Service (para que Spring cuide tu Agenda).
+Regla: Seguimos sin interfaz gráfica. Probamos que funciona usando la consola o herramientas de prueba, no con el navegador todavía.
+
+> ETAPA 3: Abrir las puertas (Endpoints y JSON)
+Objetivo: Que el navegador pueda pedir las tareas y mandar tareas nuevas.
+
+Crear un @RestController.
+Hacer la ruta GET /tareas que devuelva tu ArrayList en formato JSON.
+Hacer la ruta POST /tareas que reciba un JSON y llame a tu agregarTarea().
+Regla: Acá probamos con Postman o con el navegador viendo texto puro JSON. Nada de HTML todavía.
+
+> ETAPA 4: La cara del programa (Frontend básico)
+Objetivo: Unir el JavaScript con el Spring Boot.
+
+Crear un archivo index.html en la carpeta de recursos.
+Hacer una lista simple ul y li que muestre los días.
+Usar JavaScript (fetch) para llamar al GET /tareas de la Etapa 3 y llenar esa lista.
+Hacer un formulario básico para agregar tareas.
+Regla: CSS feo está bien. El foco es que el botón "Agregar" le hable al fetch y this.actualice la lista.
+
+> ETAPA 5: Detalles
+Objetivo: Que no se pierdan los datos al cerrar y que se vea bien.
+
+Agregar una base de datos (H2 o MySQL) con Spring Data JPA para reemplazar el ArrayList.
+Agregar CSS para que se vea como una agenda real (tarjetas, colores).
+Botones de "Modificar" y "Eliminar" en el HTML.
