@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Agenda Web</title>
+</head>
+<body style="font-family: Arial; margin: 40px; background-color: #f4f4f9;">
+    <h1 style="color: #333;">Mi Agenda Semanal</h1>
+    <h2>Agregar Tarea</h2>
+    <form id="formulario-tarea">
+        <input type="text" id="dia" placeholder="Día (ej: Lunes)" required>
+        <input type="text" id="hora" placeholder="Hora (ej: 10:00)" required>
+        <input type="text" id="texto" placeholder="¿Qué tenés que hacer?" required>
+        <button type="submit">Guardar</button>
+    </form>
+    <hr>
+    <ul id="lista-tareas" style="list-style-type: none; padding: 0;">
+    </ul>
+    <script>
+        const lista = document.getElementById("lista-tareas");
+        const nombresDias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+        // Pide los datos a Spring Boot
+        fetch("http://localhost:8081/tareas")
+            .then(respuesta => respuesta.json()) // Convierte la respuesta a JSON
+            .then(semana => {
+                semana.forEach((tareasDelDia, index) => {
+                    
+                    // Crear el título del día
+                    const titulo = document.createElement("h3");
+                    titulo.innerText = nombresDias[index];
+                    titulo.style.borderBottom = "2px solid #ccc";
+                    lista.appendChild(titulo);
+
+                    if (tareasDelDia.length === 0) {
+                        const vacio = document.createElement("li");
+                        vacio.innerText = "Sin tareas";
+                        vacio.style.color = "gray";
+                        vacio.style.marginBottom = "20px";
+                        lista.appendChild(vacio);
+                    } else {
+                        tareasDelDia.forEach(tarea => {
+                            const item = document.createElement("li");
+                            // tarea.hora y tarea.texto vienen directo del JSON que mandó Spring
+                            item.innerText = tarea.hora + " - " + tarea.texto;
+                            item.style.marginBottom = "10px";
+                            lista.appendChild(item);
+                        });
+                    }
+                });
+            });
+
+        const formulario = document.getElementById("formulario-tarea");
+                formulario.addEventListener("submit", function(event) {
+                event.preventDefault(); 
+            
+                const diaIngresado = document.getElementById("dia").value;
+                const horaIngresada = document.getElementById("hora").value;
+                const textoIngresado = document.getElementById("texto").value;
+                const tareaJson = {
+                            dia: diaIngresado,
+                            hora: horaIngresada,
+                            texto: textoIngresado
+                          };
+            fetch("http://localhost:8081/tareas", {
+                    method: "POST",
+                    body: JSON.stringify(tareaJson),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+            })
+                .then(() => {
+                // Limpiar el formulario
+                    formulario.reset();
+                // Recargar la página para ver la tarea nueva
+                location.reload();
+                });
+            });                           
+    </script>
+</body>
+</html>
