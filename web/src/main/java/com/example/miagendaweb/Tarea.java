@@ -5,13 +5,16 @@ public class Tarea {
     String hora;
     String texto;
 
-        public Tarea(String dia, String hora, String texto) {
-            this.dia = dia;
-            this.hora = hora;
-            this.texto = texto;
-        }
+    public Tarea() {
+    }
+    
+    public Tarea(String dia, String hora, String texto) {
+        this.dia = dia;
+        this.hora = hora;
+        this.texto = texto;
+    }
 
-        public String toString() {
+    public String toString() {
         return hora + " - " + texto;
     }
 }
