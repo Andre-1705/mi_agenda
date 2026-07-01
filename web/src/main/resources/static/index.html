@@ -39,19 +39,34 @@
                         vacio.style.color = "gray";
                         vacio.style.marginBottom = "20px";
                         lista.appendChild(vacio);
+                        
                     } else {
-                        tareasDelDia.forEach(tarea => {
+                        tareasDelDia.forEach((tarea, indexTarea) => {
                             const item = document.createElement("li");
                             // tarea.hora y tarea.texto vienen directo del JSON que mandó Spring
                             item.innerText = tarea.hora + " - " + tarea.texto;
                             item.style.marginBottom = "10px";
+                            // Crear el Boton de eliminar tareas 
+                            const botonEliminar = document.createElement("button");
+                            botonEliminar.innerText = "Eliminar";
+                            item.appendChild(botonEliminar);
+                            
+                            botonEliminar.addEventListener("click", function() {
+                                fetch(`http://localhost:8081/tareas/${index}/${indexTarea}`, {
+                                    method: "DELETE"
+                                })
+                                .then(() => {
+                                    // Recargar la página para ver la tarea eliminada
+                                    location.reload();
+                                });
+                            });
                             lista.appendChild(item);
                         });
                     }
                 });
             });
 
-        const formulario = document.getElementById("formulario-tarea");
+                const formulario = document.getElementById("formulario-tarea");
                 formulario.addEventListener("submit", function(event) {
                 event.preventDefault(); 
             
