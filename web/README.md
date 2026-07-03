@@ -50,11 +50,12 @@ bash
 En VS Code y apretá el botón de "Play" en MiAgendaWebApplication.java
 
 Abrí tu navegador y entrá a: [http://localhost:8081]
-Estructura del proyecto
+
+La primera vez que ejecutes bootRun, se creará una carpeta data con el archivo de la base de datos H2 (agenda-db.mv.db). Tus tareas se guardarán ahí permanentemente.
+
+> Estructura del proyecto
 
 El repositorio mantiene la versión original de consola en la raíz, y la versión web en su propia carpeta.
-
-text
 
 mi_agenda
   ├── web/                                # Proyecto Spring Boot
@@ -76,6 +77,6 @@ mi_agenda
 
 - Conectar el botón de "Modificar" en el index.html (usar el método PUT del Controller mediante un prompt o formulario auxiliar).
   
-- Reemplazar el ArrayList de la clase Agenda por una base de datos (H2 o MySQL) usando Spring Data JPA para que las tareas no se pierdan al apagar el servidor.
-  
-- Fusionar la rama spring-boot con main cuando la versión web esté estable.
+- Migrar de H2 a una base de datos más robusta como MySQL o PostgreSQL para entorno de producción.
+
+- Mejorar el diseño del Frontend con un framework (ej: Bootstrap o TailwindCSS).
