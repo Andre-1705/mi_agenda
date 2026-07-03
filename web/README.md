@@ -57,21 +57,23 @@ La primera vez que ejecutes bootRun, se creará una carpeta data con el archivo 
 
 El repositorio mantiene la versión original de consola en la raíz, y la versión web en su propia carpeta.
 
-mi_agenda
-  ├── web/                                # Proyecto Spring Boot
-  │   ├── src/main/java/.../miagendaweb/
-  │   │   ├── Tarea.java                  # Modelo (con getters/setters para JSON)
-  │   │   ├── Agenda.java                 # Lógica de negocio (@Service)
-  │   │   ├── AgendaController.java       # Endpoints REST (@RestController)
-  │   │   └── MiAgendaWebApplication.java # Punto de entrada de Spring
-  │   └── src/main/resources/
-  │       ├── application.properties      # Configuración (puerto 8081)
-  │       └── static/
-  │           └── index.html              # Frontend (HTML + JS)
-  ├── Tarea.java                          # Versión de consola (sin modificar)
-  ├── Agenda.java                         # Versión de consola (sin modificar)
-  ├── Main.java                           # Versión de consola (sin modificar)
-  └── README.md
+mi_agenda/
+    web/                                   # Proyecto Spring Boot
+        data/                              # Se genera aca el archivo de la base de datos H2
+        src/main/java/.../miagendaweb/
+            Tarea.java                     # Modelo (@Entity con ID auto-generado)
+            TareaRepository.java           # Interfaz JPA (metodos magicos de base de datos)
+            Agenda.java                    # Logica de negocio (usa Repository en vez de ArrayList)
+            AgendaController.java          # Endpoints REST (@RestController)
+            MiAgendaWebApplication.java    # Punto de entrada de Spring
+        src/main/resources/
+            application.properties         # Configuracion (puerto 8081, conexion H2, show-sql)
+            static/
+                index.html                 # Frontend (HTML + JS)
+    Tarea.java                             # Version de consola (sin modificar)
+    Agenda.java                            # Version de consola (sin modificar)
+    Main.java                              # Version de consola (sin modificar)
+    README.md
 
 > Próximos pasos
 
