@@ -57,19 +57,19 @@ El repositorio mantiene la versión original de consola en la raíz, y la versi�
 text
 
 mi_agenda
-  ├── web/                              # Proyecto Spring Boot
+  ├── web/                                # Proyecto Spring Boot
   │   ├── src/main/java/.../miagendaweb/
-  │   │   ├── Tarea.java                   # Modelo (con getters/setters para JSON)
-  │   │   ├── Agenda.java                  # Lógica de negocio (@Service)
-  │   │   ├── AgendaController.java        # Endpoints REST (@RestController)
-  │   │   └── MiAgendaWebApplication.java  # Punto de entrada de Spring
+  │   │   ├── Tarea.java                  # Modelo (con getters/setters para JSON)
+  │   │   ├── Agenda.java                 # Lógica de negocio (@Service)
+  │   │   ├── AgendaController.java       # Endpoints REST (@RestController)
+  │   │   └── MiAgendaWebApplication.java # Punto de entrada de Spring
   │   └── src/main/resources/
-  │       ├── application.properties       # Configuración (puerto 8081)
+  │       ├── application.properties      # Configuración (puerto 8081)
   │       └── static/
-  │           └── index.html               # Frontend (HTML + JS)
-  ├── Tarea.java                        # Versión de consola (sin modificar)
-  ├── Agenda.java                       # Versión de consola (sin modificar)
-  ├── Main.java                         # Versión de consola (sin modificar)
+  │           └── index.html              # Frontend (HTML + JS)
+  ├── Tarea.java                          # Versión de consola (sin modificar)
+  ├── Agenda.java                         # Versión de consola (sin modificar)
+  ├── Main.java                           # Versión de consola (sin modificar)
   └── README.md
 
 > Próximos pasos

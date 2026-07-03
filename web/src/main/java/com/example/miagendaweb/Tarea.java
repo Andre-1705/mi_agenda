@@ -1,9 +1,15 @@
-package com.example.miagendaweb;
 
+package com.example.miagendaweb;
+import jakarta.persistence.*;
+@Entity
 public class Tarea {
-    String dia;
-    String hora;
-    String texto;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String dia;
+    private String hora;
+    private String texto;
 
     public Tarea() {
     }
@@ -40,5 +46,13 @@ public class Tarea {
 
     public String toString() {
         return hora + " - " + texto;
+    }
+
+        public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

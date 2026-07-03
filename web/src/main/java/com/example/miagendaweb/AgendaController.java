@@ -29,12 +29,12 @@ public class AgendaController {
     }
 
     @PutMapping("/tareas/{dia}/{numTarea}")
-    public void modificarTarea(@PathVariable int dia, @PathVariable int numTarea, @RequestBody Tarea tarea) {
+    public void modificarTarea(@PathVariable("dia") int dia, @PathVariable("numTarea") int numTarea, @RequestBody Tarea tarea) {
         agenda.modificarTarea(dia, numTarea, tarea.getHora(), tarea.getTexto());
     }
 
     @DeleteMapping("/tareas/{dia}/{numTarea}")
-    public void eliminarTarea(@PathVariable int dia, @PathVariable int numTarea) {
+    public void eliminarTarea(@PathVariable("dia") int dia, @PathVariable("numTarea") int numTarea) {
         agenda.eliminarTarea(dia, numTarea);
     }
 }
