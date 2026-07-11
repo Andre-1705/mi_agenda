@@ -1,84 +1,109 @@
+# Mi Agenda Web
 
-# Mi Agenda
-
-Aplicación por consola desarrollada en Java para gestionar tareas semanales. Permite agregar, ver, modificar y eliminar tareas organizadas por día y hora.
+Aplicación Full Stack para gestionar tareas semanales. Este proyecto demuestra la evolución desde una simple agenda de consola en Java puro hasta una arquitectura web moderna, desacoplada y persistente.
 
 ## Funcionalidades
 
-- Visualización de la semana completa (Lunes a Domingo).
-- Alta de tareas (día, hora y descripción).
-- Modificación de tareas existentes.
-- Baja de tareas.
-- Menú interactivo en consola.
+- Arquitectura desacoplada: Backend (Spring Boot) y Frontend (React) completamente separados.
+- Comunicación en tiempo real mediante API REST y formato JSON.
+- CRUD completo funcionando (Crear, Leer, Modificar, Eliminar).
+- Persistencia de datos: Las tareas se guardan en un archivo de base de datos H2 y sobreviven al reiniciar el servidor.
+- Interfaz moderna y responsiva construida con React y Tailwind CSS v4.
+- Manejo de estado en React sin recargar la página (Single Page Application).
 
 ## Tecnologías utilizadas
 
-- Java (OpenJDK 21)
-- Visual Studio Code
-- Git y GitHub
+**Backend:**
 
-## Cómo ejecutarlo
+- Java 21
+- Spring Boot (Web, REST, Data JPA)
+- Hibernate (Mapeo Objeto-Relacional)
+- H2 Database (Base de datos en archivo)
+- Gradle
 
-1. Asegurate de tener Java 21 instalado en tu PC.
-2. Cloná este repositorio o descargá los archivos.
-3. Abrí una terminal en la carpeta donde estén los archivos.
-4. Compilá los archivos con el siguiente comando:
-   javac *.java
-5. Ejecutá el programa con el siguiente comando:
-   java Main
+**Frontend:**
 
-## Estructura del proyecto
+- React 18
+- Vite
+- Tailwind CSS v4 (con PostCSS)
+- Fetch API (JavaScript nativo)
 
-El proyecto se divide en 3 clases para mantener el código ordenado:
+**Herramientas y Flujo de trabajo:**
 
-- Tarea.java: Representa una tarea. Guarda el día, la hora y el texto. Tiene un toString() para imprimirse bonita en consola.
-- Agenda.java: Maneja la lógica. Utiliza un ArrayList de ArrayList (una lista de 7 días, donde cada día es una lista de Tareas). Contiene los métodos para mostrar, agregar, modificar y eliminar.
-- Main.java: Es el punto de entrada. Se encarga de mostrar el menú, pedir los datos al usuario por teclado (usando Scanner) y llamar a los métodos de Agenda.
+- VS Code
+- Git y GitHub (Ramas: main, spring-boot, feature/frontend-vite)
+- Arquitectura de 4 capas (Controller, Service, Repository, Entity)
 
-## Próximos pasos (Futuro)
+## Arquitectura del proyecto
 
-- Migrar la aplicación de consola a una interfaz gráfica web.
-- Crear un backend con Spring Boot exponiendo endpoints.
-- Crear un frontend con HTML, CSS y JavaScript.
-- Conectar ambos lados enviando los datos en formato JSON usando fetch.
-  
-## Proyección por etapas
+El sistema funciona con dos servidores corriendo al mismo tiempo en puertos diferentes:
 
-> ETAPA 1: Arrancar Spring Boot
-Objetivo: Conectar Java con el navegador.
+1. El Backend (Spring Boot) corre en el puerto 8081. Expone endpoints REST y devuelve JSON. Tiene configurado CORS para permitir que el frontend se comunique con él.
+2. El Frontend (Vite) corre en el puerto 5173. Muestra la interfaz gráfica, maneja el estado de la aplicación y hace peticiones Fetch al backend.
+3. La base de datos H2 genera un archivo local en la carpeta web/data/ para guardar la información de forma permanente.
 
-Instalar las herramientas necesarias (Spring Initializr).
-Crear un proyecto nuevo vacío.
-Hacer que al entrar a [http://localhost:8080] diga "Agenda funcionando".
-Regla: Sin lógica, sin tareas. Solo ver que el servidor levanta.
+## Como ejecutarlo
 
-> ETAPA 2: Migrar el cerebro (Servicios)
-Objetivo: Que tu código actual funcione dentro de Spring.
+Requerimientos: Tener Java 21 y Node.js instalados.
 
-Copiar tus clases Tarea y Agenda al nuevo proyecto.
-Aprender qué es un @Service (para que Spring cuide tu Agenda).
-Regla: Seguimos sin interfaz gráfica. Probamos que funciona usando la consola o herramientas de prueba, no con el navegador todavía.
+1. Clonar el repositorio.
+2. Abrir una terminal en la raíz del proyecto.
 
-> ETAPA 3: Abrir las puertas (Endpoints y JSON)
-Objetivo: Que el navegador pueda pedir las tareas y mandar tareas nuevas.
+> Paso 1: Levantar el Backend
 
-Crear un @RestController.
-Hacer la ruta GET /tareas que devuelva tu ArrayList en formato JSON.
-Hacer la ruta POST /tareas que reciba un JSON y llame a tu agregarTarea().
-Regla: Acá probamos con Postman o con el navegador viendo texto puro JSON. Nada de HTML todavía.
+Entrar a la carpeta del backend y ejecutarlo con Gradle:
+``
+bash
+cd web
+./gradlew bootRun
+``
 
-> ETAPA 4: La cara del programa (Frontend básico)
-Objetivo: Unir el JavaScript con el Spring Boot.
+(Esperar a que la consola diga "Started MiAgendaWebApplication...")
 
-Crear un archivo index.html en la carpeta de recursos.
-Hacer una lista simple ul y li que muestre los días.
-Usar JavaScript (fetch) para llamar al GET /tareas de la Etapa 3 y llenar esa lista.
-Hacer un formulario básico para agregar tareas.
-Regla: CSS feo está bien. El foco es que el botón "Agregar" le hable al fetch y this.actualice la lista.
+> Paso 2: Levantar el Frontend
 
-> ETAPA 5: Detalles
-Objetivo: Que no se pierdan los datos al cerrar y que se vea bien.
+Abrir UNA NUEVA terminal (dejar la del backend abierta), entrar a la carpeta del frontend e instalar las dependencias:
 
-Agregar una base de datos (H2 o MySQL) con Spring Data JPA para reemplazar el ArrayList.
-Agregar CSS para que se vea como una agenda real (tarjetas, colores).
-Botones de "Modificar" y "Eliminar" en el HTML.
+``
+bash
+cd frontend
+npm install
+npm run dev
+``
+
+> Paso 3: Usar la aplicación
+
+Abrir el navegador y entrar a la dirección que indica Vite (usualmente [http://localhost:5173]).
+
+> Estructura del proyecto
+
+mi_agenda/
+web/ # Proyecto Spring Boot (Backend)
+data/ # Se genera aca el archivo de base de datos H2
+src/main/java/.../miagendaweb/
+Tarea.java # Modelo (@Entity con ID auto-generado y getters/setters)
+TareaRepository.java # Interfaz JPA (metodos magicos de base de datos)
+Agenda.java # Lógica de negocio (usa Repository en vez de ArrayList)
+AgendaController.java # Endpoints REST (@RestController, @CrossOrigin)
+MiAgendaWebApplication.java # Punto de entrada de Spring
+src/main/resources/
+application.properties # Configuracion (puerto 8081, conexion H2)
+static/
+index.html # Frontend antiguo de prueba (ya no se usa)
+frontend/ # Proyecto React + Vite (Frontend)
+src/
+App.jsx # Componente principal (Maneja el CRUD y el estado)
+index.css # Importación de Tailwind CSS v4
+tailwind.config.js # Configuración de Tailwind
+postcss.config.js # Configuración de PostCSS
+package.json # Dependencias de Node
+Tarea.java # Versión de consola (sin modificar)
+Agenda.java # Versión de consola (sin modificar)
+Main.java # Versión de consola (sin modificar)
+README.md
+
+> Próximos pasos
+
+- Mejorar la UX del botón "Modificar" (reemplazar el prompt por un formulario inline en la tarjeta de React).
+- Migrar la base de datos de H2 a MySQL o PostgreSQL para entorno de producción.
+- Implementar autenticación (JWT) en el Backend.

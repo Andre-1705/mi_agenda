@@ -1,2 +1,4 @@
 *.class
 .vscode/
+web/data/*.mv.db
+node_modules/
