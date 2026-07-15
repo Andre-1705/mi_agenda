@@ -2,3 +2,9 @@
 .vscode/
 web/data/*.mv.db
 node_modules/
+
+*.log
+dist/
+.env
+.idea/
+.DS_Store
