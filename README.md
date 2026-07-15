@@ -23,7 +23,7 @@ Aplicación Full Stack para gestionar tareas semanales. Este proyecto demuestra 
 
 **Frontend:**
 
-- React 18
+- React 19
 - Vite
 - Tailwind CSS v4 (con PostCSS)
 - Fetch API (JavaScript nativo)
@@ -38,7 +38,7 @@ Aplicación Full Stack para gestionar tareas semanales. Este proyecto demuestra 
 
 El sistema funciona con dos servidores corriendo al mismo tiempo en puertos diferentes:
 
-1. El Backend (Spring Boot) corre en el puerto 8081. Expone endpoints REST y devuelve JSON. Tiene configurado CORS para permitir que el frontend se comunique con él.
+1. El Backend (Spring Boot) corre en el puerto 8082. Expone endpoints REST y devuelve JSON. Tiene configurado CORS para permitir que el frontend se comunique con él.
 2. El Frontend (Vite) corre en el puerto 5173. Muestra la interfaz gráfica, maneja el estado de la aplicación y hace peticiones Fetch al backend.
 3. La base de datos H2 genera un archivo local en la carpeta web/data/ para guardar la información de forma permanente.
 
@@ -87,7 +87,7 @@ Agenda.java # Lógica de negocio (usa Repository en vez de ArrayList)
 AgendaController.java # Endpoints REST (@RestController, @CrossOrigin)
 MiAgendaWebApplication.java # Punto de entrada de Spring
 src/main/resources/
-application.properties # Configuracion (puerto 8081, conexion H2)
+application.properties # Configuracion (puerto 8082, conexion H2)
 static/
 index.html # Frontend antiguo de prueba (ya no se usa)
 frontend/ # Proyecto React + Vite (Frontend)
