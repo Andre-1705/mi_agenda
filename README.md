@@ -1,109 +1,85 @@
-# Mi Agenda Web
+# Mi Agenda Semanal
 
-Aplicación Full Stack para gestionar tareas semanales. Este proyecto demuestra la evolución desde una simple agenda de consola en Java puro hasta una arquitectura web moderna, desacoplada y persistente.
+Proyecto de aprendizaje personal que recorre distintas etapas de desarrollo, desde una aplicación de consola en Java hasta una API REST en Kotlin con frontend en React.
 
-## Funcionalidades
+## Etapa 1 — Aplicación de Consola (Java)
 
-- Arquitectura desacoplada: Backend (Spring Boot) y Frontend (React) completamente separados.
-- Comunicación en tiempo real mediante API REST y formato JSON.
-- CRUD completo funcionando (Crear, Leer, Modificar, Eliminar).
-- Persistencia de datos: Las tareas se guardan en un archivo de base de datos H2 y sobreviven al reiniciar el servidor.
-- Interfaz moderna y responsiva construida con React y Tailwind CSS v4.
-- Manejo de estado en React sin recargar la página (Single Page Application).
+La versión original. Tres archivos Java en la raíz del repositorio, sin frameworks, sin base de datos:
 
-## Tecnologías utilizadas
+> Main.java
+  Punto de entrada. Menú interactivo por consola con un loop que permite agregar, eliminar, modificar y listar tareas.
+> Agenda.java
+  Lógica de negocio. Maneja una lista de tareas en memoria organizadas por día de la semana.
+> Tarea.java
+  Modelo. Una tarea con día, hora y texto.
 
-**Backend:**
+**Para ejecutar:**
 
-- Java 21
-- Spring Boot (Web, REST, Data JPA)
-- Hibernate (Mapeo Objeto-Relacional)
-- H2 Database (Base de datos en archivo)
-- Gradle
+javac *.javajava Main
+Objetivo de esta etapa: reutilizar los fundamentos de Java — clases, colecciones, control de flujo, y entrada/salida por consola.
 
-**Frontend:**
+## Etapa 2 — Spring Boot + React + Base de Datos
 
-- React 19
-- Vite
-- Tailwind CSS v4 (con PostCSS)
-- Fetch API (JavaScript nativo)
+La agenda se convierte en una aplicación web fullstack:
 
-**Herramientas y Flujo de trabajo:**
+> Backend (web/)
 
-- VS Code
-- Git y GitHub (Ramas: main, spring-boot, feature/frontend-vite)
-- Arquitectura de 4 capas (Controller, Service, Repository, Entity)
+API REST construida con Spring Boot 4.1.0 y Kotlin 2.1.0. Usa Spring Data JPA con H2 (base de datos en memoria) para persistir las tareas.
 
-## Arquitectura del proyecto
+> Estructura de archivos:
 
-El sistema funciona con dos servidores corriendo al mismo tiempo en puertos diferentes:
+- MiAgendaWebApplication.kt — Punto de entrada de Spring Boot.
+- Tarea.kt — Entity de JPA. Cada tarea tiene id, día, hora y texto.
+- TareaRepository.kt — Interface que extiende JpaRepository. Spring genera la implementación automáticamente.
+- Agenda.kt — Servicio (@Service) con la lógica de negocio: obtener la semana, agregar, eliminar y modificar tareas.
+- AgendaController.kt — Controlador REST (@RestController) con endpoints para CRUD completo.
 
-1. El Backend (Spring Boot) corre en el puerto 8082. Expone endpoints REST y devuelve JSON. Tiene configurado CORS para permitir que el frontend se comunique con él.
-2. El Frontend (Vite) corre en el puerto 5173. Muestra la interfaz gráfica, maneja el estado de la aplicación y hace peticiones Fetch al backend.
-3. La base de datos H2 genera un archivo local en la carpeta web/data/ para guardar la información de forma permanente.
+> Endpoints:
 
-## Como ejecutarlo
+| Método |           Ruta         |         Descripción            |
+|--------|------------------------|--------------------------------|
+| GET    |/tareas                 |Obtiene tareas organizadas x día|
+| POST   |/tareas                 | Agrega una nueva tarea         |
+| PUT    |/tareas/{dia}/{numTarea}| Modifica una tarea existente   |
+| DELETE |/tareas/{dia}/{numTarea}| Elimina una tarea              |
 
-Requerimientos: Tener Java 21 y Node.js instalados.
+> Frontend (frontend/)
 
-1. Clonar el repositorio.
-2. Abrir una terminal en la raíz del proyecto.
+Aplicación de React construida con Vite. Consume la API del backend y permite gestionar la agenda semanal desde el navegador con una interfaz visual.
 
-> Paso 1: Levantar el Backend
+*Sub-etapas de la migración
+El backend nació escrito en Java y luego se migró a Kotlin:
 
-Entrar a la carpeta del backend y ejecutarlo con Gradle:
-``
-bash
+- 2a — Java original: Los archivos .java fueron reemplazados por sus equivalentes .kt.
+- 2b — Migración a Kotlin: Se reescribió toda la lógica aprovechando data class, constructor secundarios, y la sintaxis más concisa de Kotlin. Se agregaron los plugins kotlin-spring (para que Spring pueda crear proxies de clases Kotlin) y kotlin-jpa (para generar automáticamente el constructor no-arg que necesita JPA). El resultado fue pasar de 219 líneas Java a 151 líneas Kotlin.
+
+> Stack Tecnológico
+
+|     Componente     |          Tecnología           |
+|--------------------|-------------------------------|
+|Backend             | Spring Boot 4.1.0 Kotlin 2.1.0|
+|Base de datos       | H2 (en memoria)               |
+|ORM(mapeo obj-relac)| Spring Data JPA               |
+|Frontend            | React + Vite                  |
+|Build               | Gradle                        |
+
+*Cómo ejecutar
+
+> Backend
+
+```bash
 cd web
 ./gradlew bootRun
-``
+```
 
-(Esperar a que la consola diga "Started MiAgendaWebApplication...")
+La API queda disponible en [http://localhost:8082].
 
-> Paso 2: Levantar el Frontend
+> Frontend
 
-Abrir UNA NUEVA terminal (dejar la del backend abierta), entrar a la carpeta del frontend e instalar las dependencias:
-
-``
-bash
+```bash
 cd frontend
 npm install
 npm run dev
-``
+```
 
-> Paso 3: Usar la aplicación
-
-Abrir el navegador y entrar a la dirección que indica Vite (usualmente [http://localhost:5173]).
-
-> Estructura del proyecto
-
-mi_agenda/
-web/ # Proyecto Spring Boot (Backend)
-data/ # Se genera aca el archivo de base de datos H2
-src/main/java/.../miagendaweb/
-Tarea.java # Modelo (@Entity con ID auto-generado y getters/setters)
-TareaRepository.java # Interfaz JPA (metodos magicos de base de datos)
-Agenda.java # Lógica de negocio (usa Repository en vez de ArrayList)
-AgendaController.java # Endpoints REST (@RestController, @CrossOrigin)
-MiAgendaWebApplication.java # Punto de entrada de Spring
-src/main/resources/
-application.properties # Configuracion (puerto 8082, conexion H2)
-static/
-index.html # Frontend antiguo de prueba (ya no se usa)
-frontend/ # Proyecto React + Vite (Frontend)
-src/
-App.jsx # Componente principal (Maneja el CRUD y el estado)
-index.css # Importación de Tailwind CSS v4
-tailwind.config.js # Configuración de Tailwind
-postcss.config.js # Configuración de PostCSS
-package.json # Dependencias de Node
-Tarea.java # Versión de consola (sin modificar)
-Agenda.java # Versión de consola (sin modificar)
-Main.java # Versión de consola (sin modificar)
-README.md
-
-> Próximos pasos
-
-- Mejorar la UX del botón "Modificar" (reemplazar el prompt por un formulario inline en la tarjeta de React).
-- Migrar la base de datos de H2 a MySQL o PostgreSQL para entorno de producción.
-- Implementar autenticación (JWT) en el Backend.
+La app queda disponible en [http://localhost:5173].
