@@ -1,6 +1,12 @@
 package com.example.miagendaweb
 
 import org.springframework.web.bind.annotation.*
+import java.text.Normalizer
+
+fun String.sinAcentos(): String {
+    val normalizado = Normalizer.normalize(this, Normalizer.Form.NFD)
+    return normalizado.replace(Regex("\\p{InCombiningDiacriticalMarks}+"), "")
+}
 
 @CrossOrigin(origins = ["*"], methods = [RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE])
 @RestController
@@ -11,7 +17,7 @@ class AgendaController(private val agenda: Agenda) {
 
     @PostMapping("/tareas")
     fun agregarTarea(@RequestBody tarea: Tarea) {
-        agenda.agregarTarea(tarea.dia, tarea.hora, tarea.texto)
+        agenda.agregarTarea(tarea.dia.sinAcentos(), tarea.hora, tarea.texto)
     }
 
     @PutMapping("/tareas/{dia}/{numTarea}")
